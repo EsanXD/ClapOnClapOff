@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ControlPanel from './components/ControlPanel';
 import ClapAnalyzer from './components/ClapAnalyzer';
 import LampDemo from './components/LampDemo';
 import { useClapDetection, type EngineId } from './hooks/useClapDetection';
 import { exportEventsToCSV } from './utils/csvExport';
-import { Microscope, PlayCircle } from 'lucide-react';
+import { Microscope, PlayCircle, Upload, Loader2, FileAudio } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import './App.css';
 
@@ -12,8 +12,9 @@ const App: React.FC = () => {
   const [lightOn, setLightOn] = useState(false);
   const [sensitivity, setSensitivity] = useState(0.5);
   const [primaryEngineId, setPrimaryEngineId] = useState<EngineId>('hybrid');
-  const [viewMode, setViewMode] = useState<'diagnostic' | 'demo'>('demo');
+  const [viewMode, setViewMode] = useState<'diagnostic' | 'demo'>('diagnostic');
   const [isPulseActive, setIsPulseActive] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // visual feedback pulse
   useEffect(() => {
@@ -31,6 +32,7 @@ const App: React.FC = () => {
   const {
     isActive,
     isRecording,
+    isAnalyzing,
     ambientLevel,
     brightness,
     sessionEvents,
@@ -42,6 +44,7 @@ const App: React.FC = () => {
     stop,
     startRecording,
     stopRecording,
+    analyzeFile,
     simulateClap,
     addManualEvent,
     deleteEvent,
@@ -51,6 +54,14 @@ const App: React.FC = () => {
     primaryEngineId,
     onDoubleClap: toggleStatus
   });
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setViewMode('diagnostic');
+      await analyzeFile(file);
+    }
+  };
 
   const toggleFalsePositive = (id: string) => {
     setSessionEvents(prev => prev.map(ev => 
@@ -70,20 +81,47 @@ const App: React.FC = () => {
           <p>Interactive Diagnostic Studio</p>
         </div>
         
-        <nav className="view-switcher">
+        <div className="header-actions">
+          <nav className="view-switcher">
+            <button 
+              className={`nav-btn ${viewMode === 'demo' ? 'active' : ''}`} 
+              onClick={() => setViewMode('demo')}
+            >
+              <PlayCircle size={18} /> Live Demo
+            </button>
+            <button 
+              className={`nav-btn ${viewMode === 'diagnostic' ? 'active' : ''}`} 
+              onClick={() => setViewMode('diagnostic')}
+            >
+              <Microscope size={18} /> Diagnostic
+            </button>
+          </nav>
+
+          <input 
+            type="file" 
+            ref={fileInputRef} 
+            onChange={handleFileUpload} 
+            accept="audio/*" 
+            className="hidden-file-input"
+          />
           <button 
-            className={`nav-btn ${viewMode === 'demo' ? 'active' : ''}`} 
-            onClick={() => setViewMode('demo')}
+            className={`upload-btn ${isAnalyzing ? 'analyzing' : ''}`}
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isAnalyzing}
           >
-            <PlayCircle size={18} /> Live Demo
+            {isAnalyzing ? (
+              <>
+                <Loader2 size={18} className="spin" />
+                <span>Scanning...</span>
+              </>
+            ) : (
+              <>
+                <Upload size={18} />
+                <span>Upload Session</span>
+              </>
+            )}
           </button>
-          <button 
-            className={`nav-btn ${viewMode === 'diagnostic' ? 'active' : ''}`} 
-            onClick={() => setViewMode('diagnostic')}
-          >
-            <Microscope size={18} /> Diagnostic
-          </button>
-        </nav>
+        </div>
 
         <div className={`status-indicator ${lightOn ? 'on' : 'off'}`}>
           <div className="status-dot"></div>
@@ -97,9 +135,9 @@ const App: React.FC = () => {
             {viewMode === 'demo' ? (
               <motion.div
                 key="demo"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.3 }}
               >
                 <LampDemo isOn={lightOn} />
@@ -107,9 +145,9 @@ const App: React.FC = () => {
             ) : (
               <motion.div
                 key="diagnostic"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.98 }}
                 transition={{ duration: 0.3 }}
               >
                 <ClapAnalyzer 
@@ -145,18 +183,23 @@ const App: React.FC = () => {
           />
           
           <div className="research-status-card">
-            <h3>System Intelligence</h3>
+            <div className="card-header">
+              {isAnalyzing ? <FileAudio size={20} /> : <Microscope size={20} />}
+              <h3>{isAnalyzing ? 'Analyzing PCM Data' : 'System Intelligence'}</h3>
+            </div>
             <p className="description">
-              {viewMode === 'demo' 
-                ? 'The Lamp is calibrated to respond to localized acoustic transients in the 2kHz-5kHz band.' 
-                : 'The Diagnostic Matrix provides parallel telemetry from Standard and Precision engines.'}
+              {isAnalyzing 
+                ? 'Performing high-speed forensic scan of spectral density and RMS transients (up to 60s).' 
+                : (viewMode === 'demo' 
+                    ? 'The Lamp responds to localized acoustic transients in the 2kHz-5kHz band.' 
+                    : 'The Matrix provides high-speed telemetry from multiple parallel engines.')}
             </p>
           </div>
         </div>
       </main>
 
       <footer className="app-footer">
-        Acoustic Telemetry & Lighting Logic v5.1
+        Professional Audio Forensic & Diagnostic Workspace v5.5
       </footer>
     </div>
   );
