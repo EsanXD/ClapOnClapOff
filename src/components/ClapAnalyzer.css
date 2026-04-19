@@ -99,20 +99,20 @@
 .waveform-timeline {
   background: rgba(0, 0, 0, 0.2);
   min-height: 100px;
-  padding-left: 100px;
+  padding-left: 120px;
 }
 
 .live-waveform-canvas {
   background: rgba(0, 0, 0, 0.1);
-  width: calc(100% - 100px);
-  margin-left: 100px;
+  width: calc(100% - 120px);
+  margin-left: 120px;
   height: 100px;
 }
 
 .spectrogram-container {
   background: #000;
   min-height: 150px;
-  padding-left: 100px;
+  padding-left: 120px;
 }
 
 .annotation-layer-overlay {
