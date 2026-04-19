@@ -1,0 +1,152 @@
+.lamp-demo-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: radial-gradient(circle at center, rgba(16, 185, 129, 0.02) 0%, transparent 70%);
+  min-height: 500px;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.demo-stage {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.demo-lamp {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lamp-hanger {
+  width: 4px;
+  height: 100px;
+  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1));
+  border-radius: 2px;
+}
+
+.lamp-body {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bulb-svg {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: rgba(255, 255, 255, 0.1);
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+}
+
+.bulb-svg.lit {
+  color: #fbbf24;
+  filter: drop-shadow(0 0 30px rgba(251, 191, 36, 0.6));
+}
+
+.lamp-light-cone {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 400px;
+  background: radial-gradient(ellipse at top, rgba(251, 191, 36, 0.15) 0%, transparent 70%);
+  clip-path: polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.lamp-light-cone.visible {
+  opacity: 1;
+}
+
+.bulb-filament {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: #fbbf24;
+  border-radius: 50%;
+  filter: blur(10px);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.bulb-filament.active {
+  opacity: 0.8;
+}
+
+.demo-floor-reflection {
+  position: absolute;
+  bottom: 50px;
+  width: 200px;
+  height: 40px;
+  background: radial-gradient(ellipse at center, rgba(251, 191, 36, 0.1) 0%, transparent 70%);
+  filter: blur(10px);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.demo-floor-reflection.active {
+  opacity: 1;
+}
+
+.demo-atmosphere {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(251, 191, 36, 0.05) 0%, transparent 80%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.demo-instructions {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 10;
+}
+
+.trigger-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px 16px;
+  border-radius: 99px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.trigger-pill span {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.trigger-pill svg {
+  color: rgba(255, 255, 255, 0.2);
+  transition: color 0.3s ease;
+}
+
+.trigger-pill svg.active {
+  color: #fbbf24;
+}
+
+.demo-instructions p {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.3);
+  margin: 0;
+}

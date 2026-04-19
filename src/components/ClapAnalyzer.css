@@ -1,0 +1,175 @@
+.analyzer-container {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+}
+
+.header-titles h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.rec-dot {
+  width: 10px;
+  height: 10px;
+  background: #ef4444;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+.live-timestamp {
+  font-size: 0.75rem;
+  font-family: monospace;
+  color: #3b82f6;
+  font-weight: 700;
+}
+
+.analyzer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.analyzer-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.action-divider {
+  width: 1px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0 4px;
+}
+
+.mode-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.mode-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.mode-btn.active {
+  background: rgba(139, 92, 246, 0.2);
+  border-color: #8b5cf6;
+  color: #a78bfa;
+}
+
+.analysis-view {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.analysis-view.recording {
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+}
+
+.waveform-timeline {
+  background: rgba(0, 0, 0, 0.2);
+  min-height: 100px;
+  padding-left: 100px;
+}
+
+.live-waveform-canvas {
+  background: rgba(0, 0, 0, 0.1);
+  width: calc(100% - 100px);
+  margin-left: 100px;
+  height: 100px;
+}
+
+.spectrogram-container {
+  background: #000;
+  min-height: 150px;
+  padding-left: 100px;
+}
+
+.annotation-layer-overlay {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.6);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  color: rgba(255,255,255,0.4);
+  pointer-events: none;
+  border: 1px solid rgba(255,255,255,0.05);
+  backdrop-filter: blur(4px);
+}
+
+.studio-footer-meta {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.live-status {
+  color: #3b82f6;
+  font-weight: 800;
+}
+
+.icon-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.5);
+  padding: 8px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.play-btn {
+  background: #3b82f6;
+  color: #fff;
+  padding: 8px 24px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.export-btn {
+  background: #10b981;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
